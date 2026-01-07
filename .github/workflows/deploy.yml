@@ -30,7 +30,7 @@ jobs:
             cd Server
             
             # 4. Build the image (Now it will find the Dockerfile)
-            sudo docker build -t stylish-devops:latest .
+            sudo docker build --no-cache -t stylish-devops:latest .
             
             # 5. Run the new container
             sudo docker run -d -p 80:3000 \
