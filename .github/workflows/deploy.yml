@@ -18,19 +18,21 @@ jobs:
           username: ${{ secrets.AWS_USERNAME }}
           key: ${{ secrets.AWS_KEY }}
           script: |
-            # 1. Stop old containers
+            # 1. Stop old containers (Ignore errors if they don't exist)
             sudo docker stop app_cloud || true
             sudo docker rm app_cloud || true
             
-            # 2. Go to folder and pull latest code
-            # (Assumes you cloned it to ~/stylish-devops)
+            # 2. Get latest code
             cd ~/stylish-devops
             git pull origin main
             
-            # 3. Build new image
+            # 3. ENTER THE SERVER FOLDER (Crucial Fix!)
+            cd Server
+            
+            # 4. Build the image (Now it will find the Dockerfile)
             sudo docker build -t stylish-devops:latest .
             
-            # 4. Run new container (Connected to Atlas)
+            # 5. Run the new container
             sudo docker run -d -p 80:3000 \
               --name app_cloud \
               -e PORT=3000 \
